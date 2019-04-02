@@ -1,0 +1,134 @@
+#parse("header.html")
+<link rel="stylesheet" media="all" href="../styles/letter.css">
+<script type="text/javascript">
+    function del(id){
+        if(confirm("确定删除该记录？")){
+
+
+            // 提交内容
+            $.ajax({
+                url: '/msg/deleteMessage?conversationId='+id,
+                type: 'get',
+                dataType: 'json'
+            });
+            //window.location.reload();
+        }
+        window.location.reload();
+    }
+
+</script>
+<script type="text/javascript">
+    var toName;
+    var fromName;
+    window.onload=function()//用window的onload事件，窗体加载完毕的时候
+    {
+        //alert(<%=session.getAttribute("message").message.toId %>+"|$message.message.fromId|");
+        // toName = getNameById(<%=$messages[0].message.fromId%>);
+        // fromName = getNameById($message.message.fromId);
+    }
+
+    /* function getNameById(id) {
+         $.ajax({
+             url: '/msg/getUserNameByUserId',
+             type: 'get',
+             data: {id:id},
+             dataType: 'json'
+         }).done(function (name) {
+             return name;
+         })
+     }*/
+    function sendMsg(){
+        //response.setContentType("application/json;charset=utf-8");
+        var textareaContents = $('#msgContent').val();
+
+
+
+        // 获取发送者名字
+
+
+        // 提交内容
+        $.ajax({
+            url: '/msg/addMessage',
+            type: 'post',
+            data: {content:textareaContents,
+                toName:$('#toName').text()},
+            dataType: 'json'
+        }).done(function (oResult) {
+            // 未登陆，跳转到登陆页面
+            if (oResult.code === 999) {
+                window.location.href = '/reglogin?next=' + window.encodeURIComponent(window.location.href);
+            } else if (oResult.code !== 0) {
+                this.error(oResult.msg || '出现错误，请重试');
+            }
+            window.location.reload();
+        }).fail(function () {
+            //alert('出现错误，请重试');
+        }).always(function () {
+            // bSubmit = false;
+        });
+        // 先不关闭
+    }
+
+
+
+
+
+</script>
+
+<div id="main">
+    <div class="zg-wrap zu-main clearfix ">
+        <ul class="letter-list">
+            #if($conversations.isEmpty())
+            <div id="zh-pm-item-wrap" class="navigable">
+                <div class="zu-list-empyt-place-holder zg-r5px" data-za-module="MessageItem">
+                    还没有人给你发私信，不如你主动一点，给神交已久的知友发一封问候私信吧:)
+                </div>
+            </div>
+            #end
+            #foreach($conversation in $conversations)
+            <li id="conversation-item-10005_622873">
+                <a class="letter-link" href="/msg/detail?conversationId=$conversation.message.conversationId"></a>
+                <div class="letter-info">
+                    <span class="l-time">$data.format('yyyy-MM-dd HH:mm:ss', $conversation.message.createdDate)</span>
+                    <br>
+                    <div class="l-operate-bar">
+
+                        共$conversation.message.id条会话
+
+                        <span class="zg-bull">|</span>
+                        <a href="/msg/detail?conversationId=$conversation.message.conversationId">查看对话</a>
+
+                        <!--<span class="zg-bull">|</span>
+                        <a class="zu-top-nav-link" href="#" id="zh-top-nav-count-wrap" role="button">
+                            消1息
+                            <span id="zh-top-nav-count" class="zu-top-nav-count zg-noti-number" style="display: none;">0</span>
+                        </a>-->
+                        <span class="zg-bull">|</span>
+                        <a class="zg-link-litblue" href="javascript:void(0);" onclick="del($conversation.message.conversationId)" name="delete">删除</a>
+                        <!--<button onclik="/msg/deleteMessage?conversationId="+$conversation.message.conversationId>删除2</button>-->
+                    </div>
+                </div>
+                <div class="chat-headbox">
+                    <a class="list-head">
+                        <img alt="头像" src="$conversation.user.headUrl">
+                    </a>
+                </div>
+                <div class="letter-detail">
+                    <a id="toName" title="通知" class="letter-name level-color-1">
+                        $conversation.user.name
+                    </a>
+                    <p class="letter-brief">
+                        $conversation.message.content
+                    </p>
+                </div>
+
+            </li>
+            #end
+
+        </ul>
+
+    </div>
+</div>
+#parse("js.html")
+<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
+#parse("footer.html")

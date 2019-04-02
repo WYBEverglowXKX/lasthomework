@@ -1,0 +1,60 @@
+#parse("header.html")
+<link rel="stylesheet" href="../../styles/result.css">
+<link rel="stylesheet" href="../../styles/detail.css">
+<div id="main">
+    <div class="zg-wrap zu-main clearfix ">
+        <div id="zh-pm-item-wrap" class="navigable">
+            <div class="zu-list-empyt-place-holder" data-za-module="MessageItem">
+                <div>
+                    &nbsp;
+                </div>
+                亲亲还没有关注的话题呢，赶快去选择一个话题关注吧:)
+                <div>
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <div class="zg-wrap zu-main clearfix ">
+            <div class="zm-profile-section-wrap zm-profile-followee-page">
+                <div class="zm-profile-section-head">
+                    <span class="zm-profile-section-name">
+                        话题列表
+                    </span>
+                </div>
+                <div class="zm-profile-section-list">
+                    <div id="zh-profile-follows-list">
+                        <div class="zh-general-list clearfix">
+                            #foreach($vo in $topicList)
+                            <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
+                                <div class="zg-right">
+                                    #if ($followed)
+                                    <button class="follow-button zg-follow zg-btn-white js-follow-topic" data-id="${vo.id}"
+                                            data-status="1">取消关注
+                                    </button>
+                                    #else
+                                    <button class="zg-btn zg-btn-follow zm-rich-follow-btn small nth-0
+                                        js-follow-topic" data-id="${vo.id}">关注
+                                    </button>
+                                    #end
+                                </div>
+                                <a title="Barty" class="zm-item-link-avatar" href="">
+                                    <img src="${vo.topicImg}" class="zm-item-img-avatar">
+                                </a>
+                                <div class="zm-list-content-medium">
+                                    <h2 class="zm-list-content-title"><a data-tip="p$t$buaabarty" href=""
+                                                                         class="zg-link"
+                                                                         title="Barty">${vo.topicName}</a></h2>
+                                </div>
+                            </div>
+                            #end
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+#parse("js.html")
+<script type="text/javascript" src="/scripts/main/site/topic.js"></script>
+#parse("footer.html")

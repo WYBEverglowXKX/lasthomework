@@ -1,0 +1,124 @@
+#parse("header.html")
+<link rel="stylesheet" media="all" href="../styles/letter.css">
+    <div id="main">
+        <div class="zg-wrap zu-main clearfix ">
+            <div class="zg-section zg-14px">
+                <span class="zg-gray-normal">发私信给:</span>
+                <!--判断messages元素是否为0-->
+                <!--$user.name || $messages[0].user.name-->
+                #if($user.name==$messages[0].user.name)
+                <span class="zg-gray-darker" id="toName">$messages[0].toUser.name </span>
+                #else
+                <span class="zg-gray-darker" id="toName">$messages[0].user.name</span>
+                #end
+            </div>
+
+            <div class="zg-section">
+
+                <a href="/msg/list">« 返回</a>
+
+
+            </div>
+            <div class="zg-section" id="zh-pm-editor-form">
+                <div class="zg-editor-simple-wrap zg-form-text-input">
+                    <div class="zg-user-name" style="display:none"></div>
+                    <textarea id="msgContent" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 39px; "></textarea>
+                </div>
+                <div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div>
+                <div class="zm-command">
+                    <a href = "javascript:void(0);" onclick ="sendMsg()" class="zg-btn-blue zg-r3px" name="send" >发送</a>
+                </div>
+            </div>
+
+            <ul class="letter-chatlist">
+                 #foreach($message in $messages)
+                <li id="msg-item-4009580">
+                    <a class="list-head">
+                        <img alt="头像" src="${message.user.headUrl}">
+                    </a>
+                    <div class="tooltip fade right in">
+                        <div class="tooltip-arrow"></div>
+                        <div class="tooltip-inner letter-chat clearfix">
+                            <div class="letter-info">
+                                <p class="letter-time">$data.format('yyyy-MM-dd HH:mm:ss', $message.message.createdDate)</p>
+                            </div>
+                            <div class="letter-info">
+                                <a class="zg-link-litblue" href="#" onclick="del($message.message.id)" name="delete">删除</a>
+
+                            </div>
+                            <p class="chat-content">
+                                $message.message.content
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                #end
+            </ul>
+
+        </div>
+    </div>
+#parse("js.html")
+<script type="text/javascript">
+    function del(id){
+        if(confirm("确定删除该记录？")){
+            // 提交内容
+            $.ajax({
+                url: '/msg/deleteSingleMessage?id='+id,
+                type: 'get',
+                dataType: 'json'
+            });
+            //window.location.reload();
+        }
+        window.location.reload();
+    }
+</script>
+
+<script type="text/javascript">
+    var toName;
+    var fromName;
+    window.onload=function()//用window的onload事件，窗体加载完毕的时候
+    {
+        //alert(<%=session.getAttribute("message").message.toId %>+"|$message.message.fromId|");
+        // toName = getNameById(<%=$messages[0].message.fromId%>);
+        // fromName = getNameById($message.message.fromId);
+    }
+
+    /* function getNameById(id) {
+     $.ajax({
+     url: '/msg/getUserNameByUserId',
+     type: 'get',
+     data: {id:id},
+     dataType: 'json'
+     }).done(function (name) {
+     return name;
+     })
+     }*/
+    function sendMsg(){
+        //response.setContentType("application/json;charset=utf-8");
+        var textareaContents = $('#msgContent').val();
+
+        // 提交内容
+        $.ajax({
+            url: '/msg/addMessage',
+            type: 'post',
+            data: {content:textareaContents,
+                toName:$('#toName').text()},
+            dataType: 'json'
+        }).done(function (oResult) {
+            // 未登陆，跳转到登陆页面
+            if (oResult.code === 999) {
+                window.location.href = '/reglogin?next=' + window.encodeURIComponent(window.location.href);
+            } else if (oResult.code !== 0) {
+                this.error(oResult.msg || '出现错误，请重试');
+            }
+            window.location.reload();
+        }).fail(function () {
+            //alert('出现错误，请重试');
+        }).always(function () {
+            // bSubmit = false;
+        });
+        // 先不关闭
+    }
+</script>
+<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
+#parse("footer.html")

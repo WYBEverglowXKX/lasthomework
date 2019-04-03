@@ -55,7 +55,8 @@ public class TopicController {
             vo.set("topicName", topic1.getTopicName());
             vo.set("topicImg", topic1.getTopicImg());
             vo.set("user", hostHolder.getUser());
-            vo.set("followed", false);
+            boolean res = followService.isFollower(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, topic1.getId());
+            vo.set("followed", followService.isFollower(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, topic1.getId()));
             topicList.add(vo);
         }
         model.addAttribute("topicList", topicList);

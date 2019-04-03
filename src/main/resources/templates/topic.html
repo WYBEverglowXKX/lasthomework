@@ -8,7 +8,7 @@
                 <div>
                     &nbsp;
                 </div>
-                亲亲还没有关注的话题呢，赶快去选择一个话题关注吧:)
+                <label id="labelShow">亲亲还没有关注的话题呢，赶快去选择一个话题关注吧:)</label>
                 <div>
                     &nbsp;
                 </div>
@@ -27,13 +27,12 @@
                             #foreach($vo in $topicList)
                             <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
                                 <div class="zg-right">
-                                    #if ($followed)
+                                    #if ($vo.followed)
                                     <button class="follow-button zg-follow zg-btn-white js-follow-topic" data-id="${vo.id}"
-                                            data-status="1">取消关注
+                                            data-status="1" name="process">取消关注
                                     </button>
                                     #else
-                                    <button class="zg-btn zg-btn-follow zm-rich-follow-btn small nth-0
-                                        js-follow-topic" data-id="${vo.id}">关注
+                                    <button class="follow-button zg-follow zg-btn-white js-follow-topic" data-id="${vo.id}" onclick="process()">关注
                                     </button>
                                     #end
                                 </div>
@@ -57,4 +56,9 @@
 
 #parse("js.html")
 <script type="text/javascript" src="/scripts/main/site/topic.js"></script>
+<script>
+    function process() {
+        document.getElementById("labelShow").innerHTML = "<div><a href='www.baidu.com'>快点我去看刚刚关注的话题吧</a></div>";
+    }
+</script>
 #parse("footer.html")

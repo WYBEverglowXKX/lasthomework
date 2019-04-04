@@ -23,4 +23,7 @@ public interface TopicDAO {
     @Select({"select " + SELECT_FIELDS + " from " + TABLE_NAME})
     List<Topic> getTopic();
 
+    @Select({"select " + SELECT_FIELDS + " from " + TABLE_NAME + " where id = #{topicId}"})
+    Topic getTopicById(int topicId);
+
 }

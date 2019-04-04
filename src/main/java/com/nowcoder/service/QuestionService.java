@@ -45,11 +45,15 @@ public class QuestionService {
         return questionDAO.getById(id);
     }
 
-    public Question getByTopic(String topic){
-        return questionDAO.getByTopic(topic);
-    }
-
     public int updateCommentCount(int id, int count) {
         return questionDAO.updateCommentCount(id, count);
+    }
+
+    public List<Question> getByTopic(List<Integer> topicList) {
+        return questionDAO.getByTopic(topicList);
+    }
+
+    public List<Question> getBySoleTopic(int topicId) {
+        return questionDAO.getBySoleTopic(topicId);
     }
 }

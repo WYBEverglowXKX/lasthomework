@@ -28,6 +28,17 @@ public interface QuestionDAO {
     @Update({"update ", TABLE_NAME, " set comment_count = #{commentCount} where id=#{id}"})
     int updateCommentCount(@Param("id") int id, @Param("commentCount") int commentCount);
 
-    @Select({"select " + SELECT_FIELDS + " from " + TABLE_NAME + " where topic=#{topic}"})
-    Question getByTopic(String topic);
+    @Select({"<script>",
+                "select",
+                " id, title, content, select_type, topic, created_date, user_id, comment_count ",
+                " from question ",
+                " where topic in",
+                "<foreach collection='topicList' item='topic' open='(' separator=',' close=')'>",
+                "#{topic}",
+                "</foreach>",
+            "</script>"})
+    List<Question> getByTopic(@Param("topicList") List<Integer> topicList);
+
+    @Select({"select " + SELECT_FIELDS + " from " + TABLE_NAME + " where topic=#{topicId}"})
+    List<Question> getBySoleTopic(int topicId);
 }

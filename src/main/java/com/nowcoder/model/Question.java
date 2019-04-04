@@ -10,7 +10,7 @@ public class Question {
     private String title;
     private String content;
     private String selectType;
-    private String topic;
+    private Integer topic;
     private Date createdDate;
     private int userId;
     private int commentCount;
@@ -47,11 +47,11 @@ public class Question {
         this.selectType = selectType;
     }
 
-    public String getTopic() {
+    public Integer getTopic() {
         return topic;
     }
 
-    public void setTopic(String topic) {
+    public void setTopic(Integer topic) {
         this.topic = topic;
     }
 

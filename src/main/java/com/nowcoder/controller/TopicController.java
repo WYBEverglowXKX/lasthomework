@@ -4,17 +4,14 @@ import com.nowcoder.model.*;
 import com.nowcoder.service.FollowService;
 import com.nowcoder.service.QuestionService;
 import com.nowcoder.service.TopicService;
+import com.nowcoder.service.UserService;
 import com.nowcoder.util.WendaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,12 +38,14 @@ public class TopicController {
     @Autowired
     FollowService followService;
 
-    @RequestMapping(value = "/topicDetail", method = {RequestMethod.GET})
+    @Autowired
+    UserService userService;
+
+    @RequestMapping(value = "/topic", method = {RequestMethod.GET})
     public String topicShow(Model model) {
         //先取出当前用户关注的话题，再根据话题去查具体问题来显示
-        int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId() : 0;
-
-        //List<Question> questionList = questionService.getByTopic();
+//        List<Integer> followList = followService.getFollowees(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, -1);
+//        if (followList == null) {
         List<ViewObject> topicList = new ArrayList<>();
         List<Topic> topic = topicService.getTopic();
         for (Topic topic1 : topic) {
@@ -55,13 +54,19 @@ public class TopicController {
             vo.set("topicName", topic1.getTopicName());
             vo.set("topicImg", topic1.getTopicImg());
             vo.set("user", hostHolder.getUser());
-            boolean res = followService.isFollower(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, topic1.getId());
-            vo.set("followed", followService.isFollower(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, topic1.getId()));
+            boolean res = followService.isFollowee(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, topic1.getId());
+            vo.set("followed", followService.isFollowee(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, topic1.getId()));
             topicList.add(vo);
         }
+        long count = followService.getFolloweeCount(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC);
         model.addAttribute("topicList", topicList);
+        model.addAttribute("followedCount", count);
 
         return "topic";
+//        } else {
+//            return topicDetail(model);
+//        }
+
     }
 
     @RequestMapping(path = {"/followTopics"}, method = {RequestMethod.POST})
@@ -81,7 +86,7 @@ public class TopicController {
 
     @RequestMapping(path = {"/unFollowTopics"}, method = {RequestMethod.POST})
     @ResponseBody
-    public String unFollowTopic(@RequestParam("topicId") int topicId){
+    public String unFollowTopic(@RequestParam("topicId") int topicId) {
         if (hostHolder.getUser() == null) {
             return WendaUtil.getJSONString(999);
         }
@@ -90,6 +95,45 @@ public class TopicController {
         info.put("id", hostHolder.getUser().getId());
         info.put("count", followService.getFollowerCount(EntityType.ENTITY_TOPIC, topicId));
         return WendaUtil.getJSONString(ret ? 0 : 1, info);
+    }
+
+    @RequestMapping(path = {"/topicDetail"}, method = {RequestMethod.GET})
+    public String topicDetail(Model model) {
+        List<Integer> followList = followService.getFollowees(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, -1);
+        if (followList.size() != 0 && followList != null) {
+            List<Question> questionList = questionService.getByTopic(followList);
+            List<ViewObject> questions = new ArrayList<>();
+            for (Question question : questionList) {
+                ViewObject vo = new ViewObject();
+                vo.set("question", question);
+                vo.set("user", userService.getUser(question.getUserId()));
+                vo.set("followCount", followService.getFollowerCount(EntityType.ENTITY_QUESTION, question.getId()));
+                questions.add(vo);
+            }
+            model.addAttribute("currentUser", hostHolder.getUser());
+            model.addAttribute("questions", questions);
+            return "topicDetail";
+        } else {
+            return topicShow(model);
+        }
+    }
+
+    @RequestMapping(path = {"/topic/{topicId}"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String soleTopic(Model model, @PathVariable("topicId") int topicId) {
+        Topic topic = topicService.getTopicById(topicId);
+        List<Question> questionList = questionService.getBySoleTopic(topicId);
+        List<ViewObject> questions = new ArrayList<>();
+        for (Question question : questionList) {
+            ViewObject vo = new ViewObject();
+            vo.set("question", question);
+            vo.set("user", userService.getUser(question.getUserId()));
+            vo.set("followCount", followService.getFollowerCount(EntityType.ENTITY_QUESTION, question.getId()));
+            questions.add(vo);
+        }
+        model.addAttribute("topic", topic);
+        model.addAttribute("followed", followService.isFollowee(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, topicId));
+        model.addAttribute("questions", questions);
+        return "soleTopic";
     }
 
 

@@ -62,7 +62,7 @@ public class QuestionController {
             question.setCreatedDate(new Date());
             question.setTitle(title);
             question.setSelectType(selectType);
-            question.setTopic(selectTypeHelp);
+            question.setTopic(Integer.parseInt(selectTypeHelp));
             if (hostHolder.getUser() == null) {
                 question.setUserId(WendaUtil.ANONYMOUS_USERID);
                 // return WendaUtil.getJSONString(999);

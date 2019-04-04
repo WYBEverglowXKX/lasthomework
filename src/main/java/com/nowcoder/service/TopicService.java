@@ -24,6 +24,10 @@ public class TopicService {
         return topicDAO.getTopic();
     }
 
+    public Topic getTopicById(int topicId) {
+        return topicDAO.getTopicById(topicId);
+    }
+
     public void followTopic(int userId, int topicId) {
         Jedis jedis = jedisAdapter.getJedis();
         jedis.lpush(userId + "lalala", topicId + "");

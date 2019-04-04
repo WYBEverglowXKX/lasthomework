@@ -113,4 +113,8 @@ public class FollowService {
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
         return jedisAdapter.zscore(followerKey, String.valueOf(userId)) != null;
     }
+    public boolean isFollowee(int userId, int entityType, int entityId) {
+        String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
+        return jedisAdapter.zscore(followeeKey, String.valueOf(entityId)) != null;
+    }
 }

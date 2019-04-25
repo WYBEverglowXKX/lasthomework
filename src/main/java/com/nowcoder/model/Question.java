@@ -9,7 +9,7 @@ public class Question {
     private int id;
     private String title;
     private String content;
-    private String selectType;
+//    private String selectType;
     private Integer topic;
     private Date createdDate;
     private int userId;
@@ -39,13 +39,13 @@ public class Question {
         this.content = content;
     }
 
-    public String getSelectType() {
-        return selectType;
-    }
-
-    public void setSelectType(String selectType) {
-        this.selectType = selectType;
-    }
+//    public String getSelectType() {
+//        return selectType;
+//    }
+//
+//    public void setSelectType(String selectType) {
+//        this.selectType = selectType;
+//    }
 
     public Integer getTopic() {
         return topic;

@@ -55,13 +55,13 @@ public class QuestionController {
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title, @RequestParam("content") String content,
-                              @RequestParam("selectType") String selectType, @RequestParam("selectTypeHelp") String selectTypeHelp) {
+                               @RequestParam("selectTypeHelp") String selectTypeHelp) {
         try {
             Question question = new Question();
             question.setContent(content);
             question.setCreatedDate(new Date());
             question.setTitle(title);
-            question.setSelectType(selectType);
+            //question.setSelectType(selectType);
             question.setTopic(Integer.parseInt(selectTypeHelp));
             if (hostHolder.getUser() == null) {
                 question.setUserId(WendaUtil.ANONYMOUS_USERID);

@@ -31,37 +31,37 @@ var oPopupAdd = new PopupAdd({
                     '</div>',
                 '</div>',
                 '<link rel="stylesheet" media="all" href="../styles/select.css">',
-                '<div>',
-                    '<select class="shortselect">',
-                        '<option>请选择文章类别</option>',
-                        '<option value ="workHelp">就业</option>',
-                        '<option value ="knowladge">专业知识</option>',
-                    '</select>',
-                '</div>',
+                // '<div>',
+                //     '<select class="shortselect">',
+                //         '<option>请选择文章类别</option>',
+                //         '<option value ="workHelp">就业</option>',
+                //         '<option value ="knowladge">专业知识</option>',
+                //     '</select>',
+                // '</div>',
                 '<div>',
                     '&nbsp',
                 '</div>',
                 '<div>',
                     '<select class="shortselecthelp" id = "selectShow" onchange="help()">',
-                        '<option>请选择话题（可选择多个）</option>',
+                        '<option>请选择话题</option>',
                         '<option value ="1">计算机</option>',
                         '<option value ="2">软件工程</option>',
                     '</select>',
                     '<div>',
                         '&nbsp',
                     '</div>',
-                    '<div>',
-                        '<label id="topicContent" style="font-size: large" >已选话题：</label>',
-                    '</div>',
-                    '<script>',
-                    function help(){
-                        var myselect = document.getElementById("selectShow");
-                        var index=myselect.selectedIndex ;
-                        var aaa = myselect.options[index].text;
-                        var la = document.getElementById("topicContent");
-                        la.innerText=la.innerHTML + "   " + aaa;
-                    },
-                    '</script>',
+                    // '<div>',
+                    //     '<label id="topicContent" style="font-size: large" >已选话题：</label>',
+                    // '</div>',
+                    // '<script>',
+                    // function help(){
+                    //     var myselect = document.getElementById("selectShow");
+                    //     var index=myselect.selectedIndex ;
+                    //     var aaa = myselect.options[index].text;
+                    //     var la = document.getElementById("topicContent");
+                    //     la.innerText=la.innerHTML + "   " + aaa;
+                    // },
+                    // '</script>',
                     '<div>',
                         '&nbsp',
                     '</div>',
@@ -77,7 +77,7 @@ var oPopupAdd = new PopupAdd({
                 var oEl = that.getEl();
                 that.titleIpt = oEl.find('.js-title');
                 that.contentIpt = oEl.find('.js-content');
-                that.selectTypeIpt = oEl.find('.shortselect');
+                //that.selectTypeIpt = oEl.find('.shortselect');
                 that.selectTypeHelpIpt = oEl.find('.shortselecthelp');
                 // 还原值
                 oConf.data && that.val(oConf.data);
@@ -154,14 +154,14 @@ var oPopupAdd = new PopupAdd({
             return {
                 title: $.trim(that.titleIpt.val()),
                 content: $.trim(that.contentIpt.val()),
-                selectType: $.trim(that.selectTypeIpt.val()),
+                //selectType: $.trim(that.selectTypeIpt.val()),
                 selectTypeHelp: $.trim(that.selectTypeHelpIpt.val())
             };
         } else {
             oData = oData || {};
             that.titleIpt.val($.tirm(oData.title));
             that.contentIpt.val($.trim(oData.content));
-            that.selectTypeIpt.val($.trim(oData.selectType));
+            //that.selectTypeIpt.val($.trim(oData.selectType));
             that.selectTypeHelpIpt.val($.trim(oData.selectTypeHelp));
         }
     }

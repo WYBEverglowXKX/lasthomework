@@ -1,10 +1,7 @@
 package com.nowcoder.controller;
 
 import com.nowcoder.model.*;
-import com.nowcoder.service.CommentService;
-import com.nowcoder.service.FollowService;
-import com.nowcoder.service.QuestionService;
-import com.nowcoder.service.UserService;
+import com.nowcoder.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +37,9 @@ public class HomeController {
 
     @Autowired
     HostHolder hostHolder;
+
+    @Autowired
+    TopicService topicService;
 
     /**
      *@Description
@@ -114,6 +114,10 @@ public class HomeController {
             vo.set("question",question);
             vo.set("user",userService.getUser(question.getUserId()));
             vo.set("followCount",followService.getFollowerCount(EntityType.ENTITY_QUESTION,question.getId()));
+            if (question.getTopic() != null) {
+                vo.set("topic", topicService.getTopicById(question.getTopic()).getTopicName());
+                vo.set("topicId", topicService.getTopicById(question.getTopic()).getId());
+            }
             vos.add(vo);
         }
         return  vos;

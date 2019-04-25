@@ -12,11 +12,11 @@ import java.util.List;
 @Mapper
 public interface QuestionDAO {
     String TABLE_NAME = " question ";
-    String INSERT_FIELDS = " title, content, select_type, topic, created_date, user_id, comment_count ";
+    String INSERT_FIELDS = " title, content, topic, created_date, user_id, comment_count ";
     String SELECT_FIELDS = " id, " + INSERT_FIELDS;
 
     @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELDS,
-            ") values (#{title},#{content},#{selectType},#{topic},#{createdDate},#{userId},#{commentCount})"})
+            ") values (#{title},#{content},#{topic},#{createdDate},#{userId},#{commentCount})"})
     int addQuestion(Question question);
 
     @Select({"select " + SELECT_FIELDS + " from " + TABLE_NAME + " where id=#{id}"})
@@ -30,7 +30,7 @@ public interface QuestionDAO {
 
     @Select({"<script>",
                 "select",
-                " id, title, content, select_type, topic, created_date, user_id, comment_count ",
+                " id, title, content, topic, created_date, user_id, comment_count ",
                 " from question ",
                 " where topic in",
                 "<foreach collection='topicList' item='topic' open='(' separator=',' close=')'>",

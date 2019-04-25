@@ -36,7 +36,7 @@ public class QuestionService {
         question.setTitle(HtmlUtils.htmlEscape(question.getTitle()));
         question.setContent(sensitiveService.filter(question.getContent()));
         question.setTitle(sensitiveService.filter(question.getTitle()));
-        question.setSelectType(question.getSelectType());
+        //question.setSelectType(question.getSelectType());
         question.setTopic(question.getTopic());
         return questionDAO.addQuestion(question)>0?question.getId():0;
     }

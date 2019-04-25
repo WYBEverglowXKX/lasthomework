@@ -43,9 +43,8 @@ public class TopicController {
 
     @RequestMapping(value = "/topic", method = {RequestMethod.GET})
     public String topicShow(Model model) {
-        //先取出当前用户关注的话题，再根据话题去查具体问题来显示
 //        List<Integer> followList = followService.getFollowees(hostHolder.getUser().getId(), EntityType.ENTITY_TOPIC, -1);
-//        if (followList == null) {
+//        if (followList == null || followList.size() == 0) {
         List<ViewObject> topicList = new ArrayList<>();
         List<Topic> topic = topicService.getTopic();
         for (Topic topic1 : topic) {

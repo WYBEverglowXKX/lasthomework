@@ -3,6 +3,9 @@ package com.nowcoder.controller;
 import com.nowcoder.async.EventModel;
 import com.nowcoder.async.EventProducer;
 import com.nowcoder.async.EventType;
+import com.nowcoder.model.EntityType;
+import com.nowcoder.service.FollowService;
+import com.nowcoder.service.TopicService;
 import com.nowcoder.service.UserService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.commons.lang.StringUtils;
@@ -33,6 +36,10 @@ public class LoginController {
 
     @Autowired
     EventProducer eventProducer;
+
+    @Autowired
+    FollowService followService;
+
     /**
      *@Description
      * 用来跳转到主页面
@@ -81,6 +88,7 @@ public class LoginController {
                 if (!StringUtils.isBlank(next)){
                     return "redirect:"+next;
                 }
+                followService.follow(userService.selectByName(username).getId(), EntityType.ENTITY_TOPIC,1);
                 return "redirect:/";
             }else {
                 model.addAttribute("msg",map.get("msg"));
@@ -122,6 +130,7 @@ public class LoginController {
                 if (!StringUtils.isBlank(next)){
                     return "redirect:"+next;
                 }
+
                 return "redirect:/";
             }else {
                 model.addAttribute("msg", map.get("msg"));

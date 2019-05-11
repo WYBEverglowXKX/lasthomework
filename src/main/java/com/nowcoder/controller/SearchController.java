@@ -40,7 +40,7 @@ public class SearchController {
                          @RequestParam(value = "count", defaultValue = "1000") int count) {
         try {
             List<Question> questionList = searchService.searchQuestion(keyword, offset, count,
-                    "", "");
+                    "<font color='red'>", "</font>");
             List<ViewObject> vos = new ArrayList<>();
             for (Question question : questionList) {
                 Question q = questionService.getById(question.getId());

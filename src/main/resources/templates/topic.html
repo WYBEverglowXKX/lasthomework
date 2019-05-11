@@ -6,7 +6,9 @@
     <div class="zg-wrap zu-main clearfix ">
         #foreach($vo in $topicList)
         #if ($vo.followed)
-        <label id="labelShow">lalala</label>
+        <script language="javascript">
+            window.location = "http://localhost:8080/topicDetail";
+        </script>
         #break
         #else
         <div id="zh-pm-item-wrap" class="navigable">
@@ -71,17 +73,17 @@
     var res = 0;
     function process() {
         if (document.getElementById("concern").innerText == "关注") {
-            alert(document.getElementById("concern").innerText);
+//            alert(document.getElementById("concern").innerText);
             document.getElementById("labelShow").innerHTML = "<div><a href='/topicDetail'>快点我去看刚刚关注的话题吧</a></div>";
             res++;
-            alert(res);
+//            alert(res);
         } else {
-            alert(document.getElementById("concern").innerText);
+//            alert(document.getElementById("concern").innerText);
             if (res == 1) {
                 document.getElementById("labelShow").innerHTML = "亲亲还没有关注的话题呢，赶快去选择一个话题关注吧:)";
             }
             res--;
-            alert(res);
+//            alert(res);
         }
     }
     function unprocess() {

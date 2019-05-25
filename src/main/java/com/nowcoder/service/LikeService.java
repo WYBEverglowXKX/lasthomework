@@ -28,8 +28,6 @@ public class LikeService {
     }
 
     /**
-     *@Author LeonWang [www.coder520.com]
-     *@Description
      * 之所以要既有likekey，又有dislikekey是因为
      * 如果一个用户 比如他一开始点的踩，他再次访问页面的时候，点赞，他的赞的数量应该加一，赞的同时说明他不是踩，就得把他之前点的踩给删除了
      */

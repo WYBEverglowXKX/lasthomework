@@ -122,13 +122,13 @@ public class SensitiveService implements InitializingBean{
                 position++;//包含敏感词的字符，但不能判断是否是敏感词
             }
         }
-        sb.append(text.substring(begin));
+        sb.append(text.substring(begin));//把剩下的不是敏感词的加上 比如字符串你好，敏感词好色，不加这个 好 就不会出现在结果里，因为在判断到好的时候已经跳出循环，好不是关键词，因为在判断中不能直接加入到最终结果，需要循环结束后加入
         return sb.toString();
     }
 
     private class TrieNode{
 
-        //key代表下一个字符，value代表节点
+        //key代表当前节点的子节点的具体值，value代表节点
         private Map<Character,TrieNode> map = new HashMap<Character,TrieNode>();
 
         //true代表敏感词结尾
@@ -158,6 +158,6 @@ public class SensitiveService implements InitializingBean{
         SensitiveService s = new SensitiveService();
         s.addWord("色情");
         s.addWord("好色");
-        System.out.print(s.filter("你好 la 色 情 a"));
+        System.out.print(s.filter("你好"));
     }
 }

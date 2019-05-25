@@ -38,6 +38,7 @@ public class FeedController {
     @Autowired
     JedisAdapter jedisAdapter;
 
+    //考虑到推拉模式的特点，拉模式的存储压力小，所以选用了拉模式，读取时间对于当前 量级的网站时间花费相差不会很大
     @RequestMapping(path = {"/pullfeeds"}, method = {RequestMethod.GET, RequestMethod.POST})
     private String getPullFeeds(Model model) {
         int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId() : 0;

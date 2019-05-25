@@ -108,6 +108,10 @@ var oPopupAdd = new PopupAdd({
                     that.error('请填写标题');
                     return true;
                 }
+                if (!oData.content) {
+                    that.error('请填写内容');
+                    return true;
+                }
                 // 避免重复提交
                 if (bSubmit) {
                     return true;

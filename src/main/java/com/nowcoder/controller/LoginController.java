@@ -67,7 +67,6 @@ public class LoginController {
      * 用户注册，处理逻辑，从service层拿到ticket，根据ticket的有无来判断是否注册成功，如果注册成功，就创建一个cookie
      * cookie的值就是ticket，浏览器存储cookie
      * 可能会出现异常，所以try catch
-     * rememberme是页面记住我的选项，如果选择记住我，cookie的存活时间增长
      */
     @RequestMapping(path = {"/reg/"}, method = {RequestMethod.POST})
     public String reg(Model model,

@@ -38,13 +38,14 @@ public class CommentController {
     EventProducer eventProducer;
 
 
-    /*
-    添加问题评论
+    /**
+     * 添加问题评论
      */
     @RequestMapping(path = {"/addComment"},method = {RequestMethod.POST,RequestMethod.GET})
     public String addComment(@RequestParam("questionId") int questionId,
                              @RequestParam("content") String content){
         Comment comment = new Comment();
+        int questionOwner = questionService.getById(questionId).getUserId();
         try{
             comment.setContent(content);
             comment.setCreatedDate(new Date());
@@ -62,7 +63,7 @@ public class CommentController {
         questionService.updateCommentCount(comment.getEntityId(),
                 commentService.getCommentCount(comment.getEntityId(),comment.getEntityType()));//更新问题对应的总评论数
         eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActorId(comment.getUserId())
-                .setEntityId(questionId));
+                .setEntityId(questionId).setEntityOwnerId(questionOwner));
         return "redirect:/question/" + questionId;
 
     }

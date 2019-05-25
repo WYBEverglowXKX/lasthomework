@@ -26,7 +26,7 @@ public class JedisAdapter implements InitializingBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        pool = new JedisPool("redis://localhost:6379/3");//注意连接池的写法！！！！！！！！！！
+        pool = new JedisPool("redis://localhost:6379/4");//注意连接池的写法！！！！！！！！！！
     }
 
     public long sadd(String key,String value){

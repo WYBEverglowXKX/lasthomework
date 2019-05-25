@@ -38,7 +38,6 @@ public class MessageController {
     UserService userService;
 
     /**
-     *@Description
      * 发送消息处理模块，注意要判断发送的目的人是否存在
      */
     @RequestMapping(path = {"/msg/addMessage"}, method = {RequestMethod.POST,RequestMethod.GET})
@@ -68,7 +67,6 @@ public class MessageController {
     }
 
     /**
-     *@Description
      * 消息列表模块  显示当前用户和其它所有用户的未读信息
      */
     @RequestMapping(path = {"/msg/list"}, method = {RequestMethod.GET})
@@ -82,7 +80,7 @@ public class MessageController {
         for (Message message : messageList){
             ViewObject vo = new ViewObject();
             vo.set("message",message);
-            vo.set("user",userService.getUser(message.getToId()));
+            vo.set("user",userService.getUser(message.getFromId()));
 
             vo.set("unread", messageService.getConversationUnreadCount(localUserId, message.getConversationId()));
 
@@ -95,7 +93,6 @@ public class MessageController {
     }
 
     /**
-     *@Description
      * 消息具体模块，显示当前用户和其它具体用户聊天的信息
      */
     @RequestMapping(path = {"/msg/detail"}, method = {RequestMethod.GET})
@@ -108,7 +105,6 @@ public class MessageController {
             ViewObject vo = new ViewObject();
             vo.set("message",message);
             vo.set("user",userService.getUser(message.getFromId()));
-            //add by liu
             vo.set("toUser",userService.getUser(message.getToId()));
             res.add(vo);
         }
@@ -117,8 +113,6 @@ public class MessageController {
     }
 
     /**
-     *@Author LeonWang
-     *@Description
      * 删除整个会话
      */
    // @ResponseBody
@@ -132,7 +126,6 @@ public class MessageController {
     }
 
     /**
-     *@Description
      * 删除单个评论
      */
    // @ResponseBody

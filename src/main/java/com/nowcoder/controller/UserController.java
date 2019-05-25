@@ -26,6 +26,7 @@ public class UserController {
 
     @Autowired
     EventProducer eventProducer;
+
     /**
      *@Description
      * 用来跳转到主页面
